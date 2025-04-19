@@ -21,8 +21,30 @@ async function getUsers(){
     }
 }
 
+async function getMessages(){
+    try{
+        let [rows, fields] = await asyncDB.query("select m.id, m.content, m.author_id, u.login from message as m JOIN User AS u ON m.author_id = u.id")
+        
+        return rows
+    }catch(err){
+        throw err.message
+    }
+}
 
+
+
+async function addMessage(content, userId){
+    try{
+        let [rows, fields] = await asyncDB.query("insert into message(content, author_id) values (?, ?)", [content, userId])
+        
+        return rows
+    }catch(err){
+        throw err.message
+    }
+}
 
 module.exports = {
-    getUsers
+    getUsers,
+    getMessages,
+    addMessage
 };
