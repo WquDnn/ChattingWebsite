@@ -63,4 +63,37 @@ header {
 }
 
 
+main.register {
+    justify-content: center;
+    align-items: center;
+}
 
+.register form {
+    display: flex;
+    flex-direction: column;
+    background-color: red;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    min-width: 400px;
+    color: wheat;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+label, button {
+    margin-top: 1rem;
+}
+
+form input {
+    padding: 0.3rem 1rem;
+    border-radius: 2rem;
+    border: none;
+}
+
+form button {
+    background-color: rebeccapurple;
+    color: wheat;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 2rem;
+}
