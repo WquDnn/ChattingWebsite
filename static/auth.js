@@ -7,7 +7,7 @@ registerForm.addEventListener("submit", (e)=>{
     let password = data.get("password")
     let passwordR = data.get("passwordR")
     if (password !== passwordR) {
-        alert("password arent real lil bro.")
+        alert("kys.")
         return
     }
 
@@ -17,7 +17,15 @@ registerForm.addEventListener("submit", (e)=>{
     fetch("/api/register", {
         method: "post",
         body: JSON.stringify({login, password})
+
+    .then((res)=>res.json()).then(res=>{
+        if(res.status = 302) window.location("/login")
+            return res.json()
+        console.log(res)
+    })
+
     }).then((res)=>res.json()).then(res=>{
         console.log(res)
     })
-})
+
+});

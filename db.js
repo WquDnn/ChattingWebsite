@@ -11,6 +11,7 @@ let db = mysql.createConnection({
 
 let asyncDB = db.promise()
 
+
 async function getUsers(){
     try{
         let [rows, fields] = await asyncDB.query("select * from User")
@@ -43,8 +44,32 @@ async function addMessage(content, userId){
     }
 }
 
+
+async function checkExists(login){
+    try{
+        let [rows, fields] = await asyncDB.query("select * from User where login = ?", [login])
+        
+        return rows.length > 0
+    }catch(err){
+        throw err.message
+    }
+}
+
+async function addUser(login, password){
+    try{
+        let [rows, fields] = await asyncDB.query("insert into User(login, password) values(?, ?)", [login, password])
+        
+        return rows
+    }catch(err){
+        throw err.message
+    }
+}
+
 module.exports = {
     getUsers,
     getMessages,
-    addMessage
+    addMessage,
+    checkExists,
+    addUser
 };
+
