@@ -65,11 +65,22 @@ async function addUser(login, password){
     }
 }
 
+async function GetUser(login){
+    try{
+        let [rows, fields] = await asyncDB.query("select * from User where login = ?", [login])
+        
+        return rows
+    }catch(err){
+        throw err.message
+    }
+}
+
 module.exports = {
     getUsers,
     getMessages,
     addMessage,
     checkExists,
-    addUser
+    addUser,
+    GetUser
 };
 

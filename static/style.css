@@ -63,12 +63,12 @@ header {
 }
 
 
-main.register {
+main.register, main.login {
     justify-content: center;
     align-items: center;
 }
 
-.register form {
+.register form, .login form{
     display: flex;
     flex-direction: column;
     background-color: red;

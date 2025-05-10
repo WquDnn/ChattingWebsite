@@ -6,6 +6,7 @@ let fs = require("fs")
 let { Server } = require("socket.io")
 const { request } = require("https")
 let bcrypt = require("bcrypt")
+let jwt = require("jsonwebtoken")
 
 let pathToIndex = path.join(__dirname, "static", "index.html")
 let index = fs.readFileSync(pathToIndex, "utf-8")
@@ -57,16 +58,35 @@ let ser = http.createServer((req, res) => {
             req.on("end", async () => {
                 data = JSON.parse(data)
                 console.log(data)
+                let hash = await bcrypt.hash(data.password, 10)
                 if(await db.checkExists(data.login)){
                     res.end("User exists")
                     return
                 }
-                
-                let hash = await bcrypt.hash(data.password, 1)
-                console.log(hash)
+
                 await db.addUser(data.login, hash)
-                res.writeHead(302, { location: "/login" })
-                res.end(JSON.stringify({ status: "ok" }))
+                
+                res.end(JSON.stringify({link: '/login' }))
+
+            })  
+            break;
+              case "/api/login":
+            let data1 = "";
+            req.on("data", (chunk) => (data1 += chunk))
+            req.on("end", async () => {
+               let {login, password} = JSON.parse(data1)
+               let info = await db.GetUser(login)
+               if(info.length == 0){
+                res.end({status: "nepraviln vvediniye dANI KYS Pbyd laska"})
+                return
+               }
+               if(await bcrypt.compare(password, info[0].password)){
+                let token = jwt.sign({login, id: info[0].id}, "apple", {expiresIn: "1h"})
+
+                res.end(JSON.stringify({status: "ok", token}))
+               }else{
+                res.end(JSON.stringify({status: "danni vvedeno ne coretly"}))
+               }
 
             })  
             break;
